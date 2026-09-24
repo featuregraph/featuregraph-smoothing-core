@@ -16,9 +16,7 @@ general-purpose release of the framework.
 ## What this is NOT
 
 This is not the full FeatureGraph codebase. Actively developed
-components -- the Accumulation behavior class, the storage/database
-layer, the Cohere query-assistant integration, and the commercial
-database/API product -- live in a separate, private repository and are
+components live in a separate, private repository and are
 not part of this package. This package exists solely to make one
 specific published numerical claim checkable.
 
