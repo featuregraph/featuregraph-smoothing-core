@@ -68,8 +68,6 @@ Signal-derived construction. For the human-annotation comparison below, each sub
 
 Human annotation comparison. For a subset of 32 BIDMC subjects, two independent expert annotations of respiratory-cycle timing are available. These are the subjects labeled confident under the characterization above, with five subjects showing structurally anomalous respiration additionally excluded. Constructed peaks, from the signal-derived construction above, are matched against annotated peaks using nearest-neighbor matching within a fixed tolerance window; recall is reported at three tolerances (0.25 s, 0.5 s, 1.0 s). Matching is performed against the annotated peak phase, the phase both annotators used. 
 
-For the CapnoBase capnography dataset, a single expert annotation is available per recording, with no second annotator to establish an independent agreement ceiling. The same matching procedure, at the same three tolerances, is applied without modification to the underlying construction.
-
 All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation, implemented in Python.
 
 ### Section 6: Results: single-recording illustration and population analysis
@@ -96,18 +94,6 @@ Where BIDMC provides two independent annotators for a subset of subjects, their 
 | 1.0 s | 95.8% / 99.1% | 97.9% |
 
 At every tolerance, recall against each annotator falls close to the inter-annotator ceiling rather than substantially below it.
-
-CapnoBase provides one annotator per recording rather than two, so no independent ceiling can be computed there; Table 2 reports recall and precision against that single annotation, bearing on whether the construction transfers to a second signal domain rather than on its accuracy.
-
-**Table 2.** CapnoBase recall and precision against a single expert annotation, at three tolerances.
-
-| Tolerance | Recall / Precision |
-|---|---|
-| 0.25 s | 41.4% / 41.3% |
-| 0.5 s | 68.5% / 68.4% |
-| 1.0 s | 97.3% / 97.4% |
-
-The same construction, applied without retuning to a different signal domain, approaches the single annotator's labels at wider tolerances.
 
 ### Section 7: FeatureGraph's role in parameter selection
 
