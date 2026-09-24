@@ -66,7 +66,7 @@ Population analysis: The same comparison, waveform object count at W=1 versus W=
 
 Signal-derived construction: For the human-annotation comparison below, each subject's respiration signal is characterized independently via autocorrelation, yielding an estimated period and a confidence flag; for confident subjects, a smoothing window is derived from that subject's own estimated period, and the construction described above is applied using that subject-specific window rather than a single window fixed across the cohort. This is the same characterization method discussed in Section 7.
 
-Human annotation comparison: For a subset of 32 BIDMC subjects, two independent expert annotations of respiratory-cycle timing are available. These are the subjects labeled confident under the characterization above, with five subjects showing structurally anomalous respiration additionally excluded. Constructed peaks, from the signal-derived construction above, are matched against annotated peaks using nearest-neighbor matching within a fixed tolerance window; recall is reported at three tolerances (0.25 s, 0.5 s, 1.0 s). Matching is performed against the annotated peak phase, the phase both annotators used. 
+Human annotation comparison: For a subset of 32 BIDMC subjects, two independent expert annotations of respiratory-cycle timing are available. These are the subjects labeled confident under the characterization above (37 of the 53 total), with five subjects showing structurally anomalous respiration additionally excluded. Constructed peaks, from the signal-derived construction above, are matched against annotated peaks using nearest-neighbor matching within a fixed tolerance window; recall is reported at three tolerances (0.25 s, 0.5 s, 1.0 s). Matching is performed against the annotated peak phase, the phase both annotators used. 
 
 All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation, implemented in Python.
 
@@ -83,7 +83,7 @@ Both windows are the result of the same procedure, applied faithfully, with one 
 
 This is not unique to a single BIDMC recording. Repeating the waveform object count comparison at W=1 vs W=100, using the identical construction across the full 53-subject BIDMC cohort, the population correlation between the two window choices is 0.39, and the ratio between them ranges from 1.14x to over 40x depending on the subject. The fact that the two waveform object counts bear little relationship to each other suggests that both encode different definitions of what constitutes signal and what constitutes noise, and that examining the signal from the outside without a stated domain purpose cannot adjudicate between them.
 
-Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method, including the construction above, can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
+Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
 
 | Tolerance | Recall (annotator 1 / annotator 2) | Inter-annotator ceiling |
 |---|---|---|
