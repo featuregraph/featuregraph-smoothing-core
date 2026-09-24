@@ -56,7 +56,7 @@ This full P/D/O/M/S classification, and its application beyond this single illus
 
 ### Section 5: Methods and data
 
-All analyses use the BIDMC PPG and Respiration Dataset, available via PhysioNet. The dataset comprises 53 recordings, each an 8-minute segment, sampled at 125 Hz. Only the impedance-derived respiration signal is used in this study.
+All analyses use the BIDMC PPG and Respiration Dataset, available via PhysioNet (Pimentel et al., 2016). The dataset comprises 53 recordings, each an 8-minute segment, sampled at 125 Hz. Only the impedance-derived respiration signal is used in this study.
 
 Waveform objects are constructed using the state-detection logic underlying FeatureGraph's Oscillation representation. For a given smoothing window W, specified in samples, the raw respiration signal is smoothed with a rolling median filter of length W, followed by a rolling mean filter of the same length, both centered. The smoothed signal is classified sample-by-sample as rising, falling, or inactive based on the sign of its first difference. A waveform object is bounded by successive peaks (transitions into a falling state), with the trough (transition into a rising state) that falls between them separating each object's falling and rising phases. The construction is applied identically across all subjects; the only parameter that changes is W.
 
