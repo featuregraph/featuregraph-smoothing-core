@@ -64,7 +64,7 @@ Single-recording illustration: One recording (subject 1) is examined at two wind
 
 Population analysis: The same comparison, waveform object count at W=1 versus W=100, is repeated independently for each of the 53 subjects in the cohort, using the identical construction and no other change in parameters. For each subject, the two window lengths' counts are recorded, and the population-level relationship between them is summarized by the Pearson correlation coefficient across all 53 subjects and by the range of the per-subject ratio (W=1 count divided by W=100 count).
 
-All analyses were performed using FeatureGraph's Oscillation representation, implemented in Python.
+All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation, implemented in Python.
 
 ### Section 6: Results: single-recording illustration and population analysis
 
