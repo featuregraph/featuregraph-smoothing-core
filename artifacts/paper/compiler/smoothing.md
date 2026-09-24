@@ -64,6 +64,12 @@ Single-recording illustration: One recording (subject 1) is examined at two wind
 
 Population analysis: The same comparison, waveform object count at W=1 versus W=100, is repeated independently for each of the 53 subjects in the cohort, using the identical construction and no other change in parameters. For each subject, the two window lengths' counts are recorded, and the population-level relationship between them is summarized by the Pearson correlation coefficient across all 53 subjects and by the range of the per-subject ratio (W=1 count divided by W=100 count).
 
+Signal-derived construction. For the human-annotation comparison below, each subject's respiration signal is characterized independently via autocorrelation, yielding an estimated period and a confidence flag; for confident subjects, a smoothing window is derived from that subject's own estimated period, and the construction described above is applied using that subject-specific window rather than a single window fixed across the cohort. This is the same characterization method discussed in Section 7.
+
+Human annotation comparison. For a subset of 32 BIDMC subjects, two independent expert annotations of respiratory-cycle timing are available. These are the subjects labeled confident under the characterization above, with five subjects showing structurally anomalous respiration additionally excluded. Constructed peaks, from the signal-derived construction above, are matched against annotated peaks using nearest-neighbor matching within a fixed tolerance window; recall is reported at three tolerances (0.25 s, 0.5 s, 1.0 s). Matching is performed against the annotated peak phase, the phase both annotators used; matching against the trough phase instead, with all other parameters unchanged. Phase alignment is a construction decision with the same character as the smoothing-window choice examined above: an unstated or incorrect phase produces near-total apparent disagreement despite an unchanged signal and construction.
+
+For the CapnoBase capnography dataset, a single expert annotation is available per recording, with no second annotator to establish an independent agreement ceiling. The same matching procedure, at the same three tolerances, is applied without modification to the underlying construction.
+
 All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation, implemented in Python.
 
 ### Section 6: Results: single-recording illustration and population analysis
@@ -79,6 +85,30 @@ Both windows are the result of the same procedure, applied faithfully, with one 
 
 This is not unique to a single BIDMC recording. Repeating the waveform object count comparison at W=1 vs W=100, using the identical construction across the full 53-subject BIDMC cohort, the population correlation between the two window choices is 0.39, and the ratio between them ranges from 1.14x to over 40x depending on the subject. The fact that the two waveform object counts bear little relationship to each other suggests that both encode different definitions of what constitutes signal and what constitutes noise, and that examining the signal from the outside without a stated domain purpose cannot adjudicate between them.
 
+Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method, including the construction above, can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
+
+**Table 1.** BIDMC recall against each of two independent expert annotators, and the annotators' agreement with each other, at three tolerances (N=32).
+
+| Tolerance | Recall (annotator 1 / annotator 2) | Inter-annotator ceiling |
+|---|---|---|
+| 0.25 s | 84.2% / 80.6% | 89.6% |
+| 0.5 s | 94.4% / 96.2% | 95.9% |
+| 1.0 s | 95.8% / 99.1% | 97.9% |
+
+At every tolerance, recall against each annotator falls close to the inter-annotator ceiling rather than substantially below it.
+
+CapnoBase provides one annotator per recording rather than two, so no independent ceiling can be computed there; Table 2 reports recall and precision against that single annotation, bearing on whether the construction transfers to a second signal domain rather than on its accuracy.
+
+**Table 2.** CapnoBase recall and precision against a single expert annotation, at three tolerances.
+
+| Tolerance | Recall / Precision |
+|---|---|
+| 0.25 s | 41.4% / 41.3% |
+| 0.5 s | 68.5% / 68.4% |
+| 1.0 s | 97.3% / 97.4% |
+
+The same construction, applied without retuning to a different signal domain, approaches the single annotator's labels at wider tolerances.
+
 ### Section 7: FeatureGraph's role in parameter selection
 
 Peak-detection and smoothing-parameter sensitivity arises in fields adjacent to respiratory waveform construction. In ECG R-peak detection, fixed decision thresholds are documented to fail under changing signal amplitude, missing low-amplitude peaks or producing extended detection gaps after anomalous beats, requiring threshold-adjustment rules to compensate (Imtiaz & Khan, 2022). In EEG sleep-spindle detection, automated methods rely on fixed numeric thresholds across several signal features, and different detectors, or a detector compared against human expert scoring, typically show only moderate agreement (Lacourse et al., 2019). In both fields, this sensitivity is usually treated as a tuning problem, something to be measured against a downstream metric or reference method, rather than as a specification problem requiring its own justification.
@@ -90,6 +120,8 @@ Under the representation-language classification, the instability demonstrated a
 The determination of what should be removed from an oscillation as noise is part of the scientific question being asked, specifically the question "Which of these waveform objects are part of the phenomena I want to observe for this study, and which ones are not?" It is not, under this three-level construction, answerable on the level of structural or analytical knowledge but on the level of scientific or domain understanding.
 
 What FeatureGraph can do as a bootstrap toward this determination is structural, not scientific. It can characterize the signal's own periodicity directly, independent of any smoothing choice, and use that measurement to suggest a principled range of window sizes, along with an explicit flag of when no such suggestion is trustworthy. This narrows the space of defensible smoothing choices to those consistent with the signal's own measured structure, providing a constraint on which smoothing specifications are worth defending.
+
+A second, independent kind of bootstrap is available where multiple human annotations exist. Lacourse et al. (2019) report only moderate agreement between automated EEG spindle detectors and expert human scoring; the BIDMC comparison in Section 6 quantifies the same phenomenon directly, with two independent expert annotators themselves reaching a ceiling of 89.6–97.9% mutual agreement depending on tolerance, and the construction's agreement with either annotator falling close to that ceiling rather than substantially below it. This does not identify which construction, or which annotator, is correct — that remains an S-level determination, per the three-level classification above. It does establish, empirically rather than by assumption, how much disagreement is already present in human judgment before any automated construction is introduced, providing a second, orthogonal constraint alongside signal-derived periodicity: not on which window is defensible, but on how much precision any method, human or automated, can be expected to achieve against another.
 
 ### References
 
