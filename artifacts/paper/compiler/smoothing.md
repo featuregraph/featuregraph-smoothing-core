@@ -64,9 +64,9 @@ Single-recording illustration: One recording (subject 1) is examined at two wind
 
 Population analysis: The same comparison, waveform object count at W=1 versus W=100, is repeated independently for each of the 53 subjects in the cohort, using the identical construction and no other change in parameters. For each subject, the two window lengths' counts are recorded, and the population-level relationship between them is summarized by the Pearson correlation coefficient across all 53 subjects and by the range of the per-subject ratio (W=1 count divided by W=100 count).
 
-Signal-derived construction. For the human-annotation comparison below, each subject's respiration signal is characterized independently via autocorrelation, yielding an estimated period and a confidence flag; for confident subjects, a smoothing window is derived from that subject's own estimated period, and the construction described above is applied using that subject-specific window rather than a single window fixed across the cohort. This is the same characterization method discussed in Section 7.
+Signal-derived construction: For the human-annotation comparison below, each subject's respiration signal is characterized independently via autocorrelation, yielding an estimated period and a confidence flag; for confident subjects, a smoothing window is derived from that subject's own estimated period, and the construction described above is applied using that subject-specific window rather than a single window fixed across the cohort. This is the same characterization method discussed in Section 7.
 
-Human annotation comparison. For a subset of 32 BIDMC subjects, two independent expert annotations of respiratory-cycle timing are available. These are the subjects labeled confident under the characterization above, with five subjects showing structurally anomalous respiration additionally excluded. Constructed peaks, from the signal-derived construction above, are matched against annotated peaks using nearest-neighbor matching within a fixed tolerance window; recall is reported at three tolerances (0.25 s, 0.5 s, 1.0 s). Matching is performed against the annotated peak phase, the phase both annotators used. 
+Human annotation comparison: For a subset of 32 BIDMC subjects, two independent expert annotations of respiratory-cycle timing are available. These are the subjects labeled confident under the characterization above, with five subjects showing structurally anomalous respiration additionally excluded. Constructed peaks, from the signal-derived construction above, are matched against annotated peaks using nearest-neighbor matching within a fixed tolerance window; recall is reported at three tolerances (0.25 s, 0.5 s, 1.0 s). Matching is performed against the annotated peak phase, the phase both annotators used. 
 
 All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation, implemented in Python.
 
@@ -85,13 +85,13 @@ This is not unique to a single BIDMC recording. Repeating the waveform object co
 
 Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method, including the construction above, can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
 
-**Table 1.** BIDMC recall against each of two independent expert annotators, and the annotators' agreement with each other, at three tolerances (N=32).
-
 | Tolerance | Recall (annotator 1 / annotator 2) | Inter-annotator ceiling |
 |---|---|---|
 | 0.25 s | 84.2% / 80.6% | 89.6% |
 | 0.5 s | 94.4% / 96.2% | 95.9% |
 | 1.0 s | 95.8% / 99.1% | 97.9% |
+
+<sub>Table 1. BIDMC recall against each of two independent expert annotators, and the annotators' agreement with each other, at three tolerances (N=32)</sub>
 
 At every tolerance, recall against each annotator falls close to the inter-annotator ceiling rather than substantially below it.
 
