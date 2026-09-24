@@ -75,19 +75,6 @@ def test_pipeline_runs_on_synthetic_signal():
     assert (complete_durations < 200).all()
 
 
-@pytest.mark.skip(
-    reason=(
-        "All underlying code (operators/states.py, operators/events.py, "
-        "operators/measures.py, utils/_rename_map.py) is now real, "
-        "verified source -- confirmed by exact line/loc-count matches "
-        "against the private repo and by passing synthetic-data pipeline "
-        "and rename-map tests above. This test is skipped only because "
-        "it needs network access to download real BIDMC data, not "
-        "available in the environment that assembled this package. "
-        "Un-skip and run with network access for the final confirmation "
-        "that this package reproduces the paper's exact numbers."
-    )
-)
 def test_reproduces_paper_correlation_and_ratio_range():
     import featuregraph_smoothing_core as fg
 
