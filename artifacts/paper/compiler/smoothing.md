@@ -83,7 +83,7 @@ Both windows are the result of the same procedure, applied faithfully, with one 
 
 This is not unique to a single BIDMC recording. Repeating the waveform object count comparison at W=1 vs W=100, using the identical construction across the full 53-subject BIDMC cohort, the population correlation between the two window choices is 0.39, and the ratio between them ranges from 1.14x to over 40x depending on the subject. The fact that the two waveform object counts bear little relationship to each other suggests that both encode different definitions of what constitutes signal and what constitutes noise, and that examining the signal from the outside without a stated domain purpose cannot adjudicate between them.
 
-Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
+Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method, including the signal-derived construction identified in Section 5, can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
 
 | Tolerance | Recall (annotator 1 / annotator 2) | Inter-annotator ceiling |
 |---|---|---|
