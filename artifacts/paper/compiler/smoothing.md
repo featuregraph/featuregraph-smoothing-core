@@ -58,13 +58,13 @@ This full P/D/O/M/S classification, and its application beyond this single illus
 
 All analyses use the BIDMC PPG and Respiration Dataset, available via PhysioNet. The dataset comprises 53 recordings, each an 8-minute segment, sampled at 125 Hz. Only the impedance-derived respiration signal is used in this study.
 
-Waveform objects are constructed using the state-detection logic underlying FeatureGraph's Oscillation representation. For a given smoothing window W, specified in samples, the raw respiration signal is smoothed with a rolling median filter of length W, followed by a rolling mean filter of the same length, both centered. The smoothed signal is classified sample-by-sample as rising, falling, or inactive based on the sign of its first difference. A waveform object starts at a trough (transition into a rising state) and closes at the next trough. The peak (transition into a falling state) is marked within the object. The construction is applied identically across all subjects; the only parameter that changes is W.
+Waveform objects are constructed using the state-detection logic underlying FeatureGraph's Oscillation representation. For a given smoothing window W, specified in samples, the raw respiration signal is smoothed with a rolling median filter of length W, followed by a rolling mean filter of the same length, both centered. The smoothed signal is classified sample-by-sample as rising, falling, or inactive based on the sign of its first difference. A waveform object is bounded by successive peaks (transitions into a falling state), with the trough (transition into a rising state) that falls between them separating each object's falling and rising phases. The construction is applied identically across all subjects; the only parameter that changes is W.
 
 Single-recording illustration: One recording (subject 1) is examined at two window lengths, W=1 (effectively unsmoothed) and W=100, over an 8-minute segment. Waveform object boundaries and counts are compared directly between the two constructions.
 
 Population analysis: The same comparison, waveform object count at W=1 versus W=100, is repeated independently for each of the 53 subjects in the cohort, using the identical construction and no other change in parameters. For each subject, the two window lengths' counts are recorded, and the population-level relationship between them is summarized by the Pearson correlation coefficient across all 53 subjects and by the range of the per-subject ratio (W=1 count divided by W=100 count).
 
-All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation and its state-detection primitives, implemented in Python.
+All analyses were performed using FeatureGraph's Oscillation representation, implemented in Python.
 
 ### Section 6: Results: single-recording illustration and population analysis
 
