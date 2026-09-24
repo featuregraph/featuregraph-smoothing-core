@@ -47,7 +47,7 @@ The remainder of this discussion rests on a five-part classification, developed 
 1. P - compiler primitive (sign-test operations that classify a signal as rising, falling, or inactive)
 2. D - declarative definition (smoothing window and other parameters a researcher specifies before computation)
 3. O - compiled output (resulting states, boundaries, and waveform object identities)
-4. M - measurement (quantities computed from O, such as duration, period, or the correlation statistics in Section 5)
+4. M - measurement (quantities computed from O, such as duration, period, or correlation statistics)
 5. S - scientific interpretation (which waveform objects reflect the phenomenon under study).
    
 This extends the three-level distinction introduced above into a five-part classification, structural understanding corresponds to P (compiler primitives) and O (compiled output); analytical understanding corresponds to D (declarative definitions) and M (measurements); and scientific understanding corresponds to S (scientific interpretation).
@@ -58,13 +58,13 @@ This full P/D/O/M/S classification, and its application beyond this single illus
 
 All analyses use the BIDMC PPG and Respiration Dataset, available via PhysioNet. The dataset comprises 53 recordings, each an 8-minute segment, sampled at 125 Hz. Only the impedance-derived respiration signal is used in this study.
 
-Waveform objects are constructed using the state-detection logic underlying FeatureGraph's Oscillation representation. For a given smoothing window W, the raw respiration signal is smoothed with a rolling median filter of length W, followed by a rolling mean filter of the same length, both centered. The smoothed signal is classified sample-by-sample as rising, falling, or inactive based on the sign of its first difference. A waveform object is bounded by successive peaks (transitions into a falling state), with the trough (transition into a rising state) that falls between them separating each object's falling and rising phases. The construction is applied identically across all subjects; the only parameter that changes is W.
+Waveform objects are constructed using the state-detection logic underlying FeatureGraph's Oscillation representation. For a given smoothing window W, specified in samples, the raw respiration signal is smoothed with a rolling median filter of length W, followed by a rolling mean filter of the same length, both centered. The smoothed signal is classified sample-by-sample as rising, falling, or inactive based on the sign of its first difference. A waveform object starts at a trough (transition into a rising state) and closes at the next trough. The peak (transition into a falling state) is marked within the object. The construction is applied identically across all subjects; the only parameter that changes is W.
 
 Single-recording illustration: One recording (subject 1) is examined at two window lengths, W=1 (effectively unsmoothed) and W=100, over an 8-minute segment. Waveform object boundaries and counts are compared directly between the two constructions.
 
-Population analysis: The same comparison — waveform object count at W=1 versus W=100 — is repeated independently for each of the 53 subjects in the cohort, using the identical construction and no other change in parameters. For each subject, the two window lengths' counts are recorded, and the population-level relationship between them is summarized by the Pearson correlation coefficient across all 53 subjects and by the range of the per-subject ratio (W=1 count divided by W=100 count).
+Population analysis: The same comparison, waveform object count at W=1 versus W=100, is repeated independently for each of the 53 subjects in the cohort, using the identical construction and no other change in parameters. For each subject, the two window lengths' counts are recorded, and the population-level relationship between them is summarized by the Pearson correlation coefficient across all 53 subjects and by the range of the per-subject ratio (W=1 count divided by W=100 count).
 
-All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation, implemented in Python.
+All analyses were performed using the state-detection logic underlying FeatureGraph's Oscillation representation and its state-detection primitives, implemented in Python.
 
 ### Section 6: Results: single-recording illustration and population analysis
 
@@ -73,7 +73,7 @@ We examine a single BIDMC respiration recording (subject 1, an 8-minute segment)
 ![W=1](w1.png)
 ![W=100](w100.png)
 
-Figure 1. The same 8-minute BIDMC respiration recording (subject 1, t=7000–9000), processed by the identical construction — rolling median-then-mean smoothing followed by rising/falling state detection — at two window lengths. (Left, W=1) Effectively no smoothing; respiration_smooth closely tracks the raw signal, and small secondary fluctuations within each breath each register as their own waveform object, producing dense clusters of 2–3 exit_respiration_rising events per breath. (Right, W=100) The same construction with a larger window; respiration_smooth traces a single clean envelope per breath, and exit_respiration_rising fires exactly once per breath, six times across the segment. No parameter other than the smoothing window differs between the two panels.
+<sub>Figure 1. The same 8-minute BIDMC respiration recording (subject 1, t=7000–9000), processed by the identical construction — rolling median-then-mean smoothing followed by rising/falling state detection — at two window lengths. (Left, W=1) Effectively no smoothing; respiration_smooth closely tracks the raw signal, and small secondary fluctuations within each breath each register as their own waveform object, producing dense clusters of 2–3 exit_respiration_rising events per breath. (Right, W=100) The same construction with a larger window; respiration_smooth traces a single clean envelope per breath, and exit_respiration_rising fires exactly once per breath, six times across the segment. No parameter other than the smoothing window differs between the two panels.</sub>
 
 Both windows are the result of the same procedure, applied faithfully, with one parameter changed. The disagreement is not an error in either construction; it is the mechanical consequence of smoothing determining what considers meaningful signal and what should be removed as noise. When we change the smoothing specification, every downstream count changes with it, without either construction becoming incorrect.
 
@@ -81,7 +81,7 @@ This is not unique to a single BIDMC recording. Repeating the waveform object co
 
 ### Section 7: FeatureGraph's role in parameter selection
 
-Peak-detection and smoothing parameter sensitivity arises in fields adjacent to respiratory waveform construction (ECG R-peak detection, EEG event detection). It is usually treated as a tuning problem, something to be measured against a downstream metric or reference method, rather than as a specification problem requiring its own justification.
+Peak-detection and smoothing-parameter sensitivity arises in fields adjacent to respiratory waveform construction. In ECG R-peak detection, fixed decision thresholds are documented to fail under changing signal amplitude, missing low-amplitude peaks or producing extended detection gaps after anomalous beats, requiring threshold-adjustment rules to compensate (Imtiaz & Khan, 2022). In EEG sleep-spindle detection, automated methods rely on fixed numeric thresholds across several signal features, and different detectors, or a detector compared against human expert scoring, typically show only moderate agreement (Lacourse et al., 2019). In both fields, this sensitivity is usually treated as a tuning problem, something to be measured against a downstream metric or reference method, rather than as a specification problem requiring its own justification.
 
 FeatureGraph's contribution is first demonstrating the instability due to smoothing parameter construction quantitatively across a real population, and then explicitly using the structural/analytic/scientific three-level separation to decide what automation can and cannot resolve, rather than leaving it as an implicit judgment call of the researcher.
 
@@ -89,4 +89,14 @@ Under the representation-language classification, the instability demonstrated a
 
 The determination of what should be removed from an oscillation as noise is part of the scientific question being asked, specifically the question "Which of these waveform objects are part of the phenomena I want to observe for this study, and which ones are not?" It is not, under this three-level construction, answerable on the level of structural or analytical knowledge but on the level of scientific or domain understanding.
 
-What FeatureGraph can do as a bootstrap toward this determination is structural, not scientific. It can characterize the signal's own periodicity directly, independent of any smoothing choice, and use that measurement to suggest a principled range of window sizes, along with an explicit flag of when no such suggestion is trustworthy. This does not answer which waveform objects belong to the phenomenon under study; it narrows the space of defensible smoothing choices to those consistent with the signal's own measured structure, providing a constraint on which smoothing specifications are worth defending.
+What FeatureGraph can do as a bootstrap toward this determination is structural, not scientific. It can characterize the signal's own periodicity directly, independent of any smoothing choice, and use that measurement to suggest a principled range of window sizes, along with an explicit flag of when no such suggestion is trustworthy. This narrows the space of defensible smoothing choices to those consistent with the signal's own measured structure, providing a constraint on which smoothing specifications are worth defending.
+
+### References
+
+BIDMC PPG and Respiration Dataset (version 1.0.0). PhysioNet. https://physionet.org/content/bidmc/1.0.0/
+
+Pimentel, M. A. F., Johnson, A. E. W., Charlton, P. H., Birrenkott, D., Watkinson, P. J., Tarassenko, L., & Clifton, D. A. (2016). Toward a robust estimation of respiratory rate from pulse oximeters. IEEE Transactions on Biomedical Engineering, 64(8), 1914–1923.
+
+Imtiaz, M. N., & Khan, N. (2022). Pan-Tompkins++: A robust approach to detect R-peaks in ECG signals. arXiv preprint arXiv:2211.03171.
+
+Lacourse, K., Delfrate, J., Beaudry, J., Peppard, P., & Warby, S. C. (2019). A sleep spindle detection algorithm that emulates human expert spindle scoring. Journal of Neuroscience Methods, 316, 3–11. https://doi.org/10.1016/j.jneumeth.2018.08.014
