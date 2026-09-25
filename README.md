@@ -93,8 +93,8 @@ That one-line change is the only edit the script needs.
 
 ## Citation
 
-[TODO: add citation for the smoothing paper once finalized, and a
-Zenodo DOI for this package's tagged release once cut.]
+Software: tagged release v1.0.0, archived at
+10.5281/zenodo.22947447.
 
 ## License
 
