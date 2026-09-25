@@ -6,44 +6,17 @@ smoothing paper (peak-count correlation and ratio spread across the
 53-subject BIDMC cohort at different smoothing windows) can be
 independently reproduced.
 
-## What this is
+## What's in this repo
 
 This package contains exactly one class, `OscillationConfig`, and its
 three direct dependencies (`operators/states.py`, `operators/events.py`,
 `operators/measures.py`) -- nothing else from FeatureGraph. It is not a
 general-purpose release of the framework.
 
-## What this is NOT
-
 This is not the full FeatureGraph codebase. Actively developed
 components live in a separate, private repository and are
 not part of this package. This package exists solely to make one
 specific published numerical claim checkable.
-
-## Status
-
-**Complete.** All four pieces have real, verified source: the
-operators (`states.py`, `events.py`, `measures.py`, all transcribed
-from the private repo at commit `8bfee18` and confirmed against exact
-line/loc counts plus a passing synthetic end-to-end pipeline run), and
-`utils/_rename_map.py`'s `bidmc_map` (confirmed to correctly rename
-raw BIDMC columns, including producing "respiration" -- the column
-`OscillationConfig` needs).
-
-Deliberately out of scope: the real `_rename_map.py` also contains an
-`eastman_map` dict for Tennessee Eastman Process (TEP) column names.
-That's excluded here -- irrelevant to this package's purpose, and
-TEP work hasn't started yet.
-
-**Only remaining step**: `test_reproduces_paper_correlation_and_ratio_range`
-in `tests/test_oscillation.py` is still marked skip, purely because
-this environment has no network access to download real BIDMC data.
-Un-skip and run it with network access to get final confirmation that
-this package reproduces the paper's exact 0.3889 correlation and
-1.14x-40.25x ratio range -- that's the one thing not yet directly
-confirmed, everything else has been.
-
-## What's in this repo
 
 - `src/featuregraph_smoothing_core/` -- the package (`OscillationConfig`,
   its three operator dependencies, the BIDMC data loader, and a
@@ -54,24 +27,6 @@ confirmed, everything else has been.
   Uses plain manual construction logic, not `OscillationConfig`, so it
   never depended on the private repo in the first place.
 - `artifacts/paper/compiler/smoothing.md` -- the paper manuscript.
-
-## Known open items in the paper text
-
-Two things in `smoothing.md` are worth resolving before this repo is
-tagged as the paper's citable software release, since the actual
-verified code now sits right next to the text making these checkable:
-
-1. Section 5 states a waveform object is trough-to-trough ("starts at
-   a trough... closes at the next trough"), but the actual code
-   (`exit_respiration_rising_id`, in both `notebooks/bidmc_visual_demo.ipynb`
-   and the object-summarization logic) groups peak-to-peak. Either the
-   text or a note reconciling the two is needed.
-2. Section 5 also still says objects are "constructed using
-   FeatureGraph's Oscillation representation" -- a previously-discussed
-   softening (to "the state-detection logic underlying FeatureGraph's
-   Oscillation representation") hasn't been applied to this draft.
-
-No abstract or references section is present yet in this draft.
 
 ## Using this with the population-statistics script
 
