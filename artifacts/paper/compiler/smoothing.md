@@ -111,6 +111,10 @@ A second, independent kind of bootstrap is available where multiple human annota
 
 Lacourse et al. (2019) report only moderate agreement between automated EEG spindle detectors and expert human scoring; the BIDMC comparison in Section 6 quantifies the same phenomenon directly, with two independent expert annotators themselves reaching a ceiling of 89.6–97.9% mutual agreement depending on tolerance, and the construction's agreement with either annotator falling close to that ceiling rather than substantially below it. This establishes how much disagreement is already present in human judgment before any automated construction is introduced, providing a second, orthogonal constraint alongside signal-derived periodicity: how much precision any method, human or automated, can be expected to achieve against another.
 
+### Software Availability
+
+All code used to produce the results in this paper — the construction logic (`OscillationConfig` and its operator dependencies), the BIDMC data loader, and the ground-truth validation module (`characterize_signal`, `match_breaths`, `compute_canonical_indices`) — is publicly available at https://github.com/featuregraph/featuregraph-smoothing-core. The exact version used in this paper is tagged `v1.0.0` and archived at https://doi.org/10.5281/zenodo.22947447. The population-correlation result (Section 6) and the human-annotation recall result (Table 1) are each confirmed by a corresponding test in the repository, run against real BIDMC data.
+
 ### References
 
 BIDMC PPG and Respiration Dataset (version 1.0.0). PhysioNet. https://physionet.org/content/bidmc/1.0.0/
