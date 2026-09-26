@@ -85,13 +85,13 @@ This is not unique to a single BIDMC recording. Repeating the waveform object co
 
 Where BIDMC provides two independent annotators for a subset of subjects, their agreement with each other establishes a ceiling on how closely any single method, including the signal-derived construction identified in Section 5, can be expected to agree with either one. Table 1 reports recall against each annotator alongside this inter-annotator ceiling, at three matching tolerances.
 
-| Tolerance | Recall (annotator 1 / annotator 2) | Inter-annotator ceiling |
-|---|---|---|
-| 0.25 s | 84.2% / 80.6% | 89.6% |
-| 0.5 s | 94.4% / 96.2% | 95.9% |
-| 1.0 s | 95.8% / 99.1% | 97.9% |
+| Tolerance | Recall (annotator 1 / annotator 2) | Precision (annotator 1 / annotator 2) | Inter-annotator ceiling (recall / precision) |
+|---|---|---|---|
+| 0.25 s | 84.2% / 80.6% | 84.8% / 80.9% | 89.6% / 89.8% |
+| 0.5 s | 94.4% / 96.2% | 95.0% / 96.6% | 95.9% / 96.1% |
+| 1.0 s | 95.8% / 99.1% | 96.4% / 99.5% | 97.9% / 98.1% |
 
-<sub>Table 1. BIDMC recall against each of two independent expert annotators, and the annotators' agreement with each other, at three tolerances (N=32)</sub>
+<sub>Table 1. BIDMC precision and recall against each of two independent expert annotators, and the annotators' agreement with each other, at three tolerances (N=32)</sub>
 
 At every tolerance, recall against each annotator falls close to the inter-annotator ceiling rather than substantially below it.
 
